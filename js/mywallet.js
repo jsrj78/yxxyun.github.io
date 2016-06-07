@@ -164,8 +164,8 @@ var OrderBookUtils = ripple.OrderBookUtils;
 var CLIENT_VERSION = "yxxyun-0.6";
 var INSERT_CLIENT_INFO = true;
 
-var DEFAULT_ACCOUNT = "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
-var DEFAULT_SECRET = "snoPBrXtMeMyMHUVTgbuqAfg1SUTb";
+var DEFAULT_ACCOUNT =""; //"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
+var DEFAULT_SECRET ="";// "snoPBrXtMeMyMHUVTgbuqAfg1SUTb";
 
 var PATHFIND_MAX = 10; // stop pathfinding after reaching PATHFIND_MAX
 var SLIPAGE = 1; // 1%, for calculating sendMax
@@ -192,6 +192,14 @@ var remote = new Remote({
         secure: true
     }, {
         host: 's2.ripple.com',
+        port: 443,
+        secure: true
+    }, {
+        host: 's-west.ripple.com',
+        port: 443,
+        secure: true
+    }, {
+        host: 's-east.ripple.com',
         port: 443,
         secure: true
     }]
@@ -498,10 +506,11 @@ walletApp.controller('walletCtrl', ['$translate', '$scope', '$http', '$uibModal'
 
     $scope.infoPageLoad = function() {
         if (!$scope.walletAccount) {
-            $scope.setWalletAccount({
-                address: DEFAULT_ACCOUNT,
-                secret: DEFAULT_SECRET
-            });
+            // $scope.setWalletAccount({
+            //     address: DEFAULT_ACCOUNT,
+            //     secret: DEFAULT_SECRET
+            // });
+            return;
         }
         if (!$scope.walletAccount.account_data) $scope.accountInfo();
     }
@@ -535,6 +544,13 @@ walletApp.controller('walletCtrl', ['$translate', '$scope', '$http', '$uibModal'
             if (err) {
                 if (err.remote) {
                     var account = err.remote.account || err.remote.request.account;
+                    if (!$scope.walletAccount) {
+                    // $scope.setWalletAccount({
+                    //     address: DEFAULT_ACCOUNT,
+                    //     secret: DEFAULT_SECRET
+                    // });
+                    return;
+                    }
                     if (account != $scope.walletAccount._account_id) return;
                     if (err.remote.error) $scope.accountLinesStatus = err.remote.error;
                 } else {
@@ -2155,6 +2171,13 @@ walletApp.controller('walletCtrl', ['$translate', '$scope', '$http', '$uibModal'
     }
 
     $scope.offerPageLoad = function() {
+        if (!$scope.walletAccount) {
+            // $scope.setWalletAccount({
+            //     address: DEFAULT_ACCOUNT,
+            //     secret: DEFAULT_SECRET
+            // });
+            return;
+        }
         if (!$scope.accountOffers.all) $scope.getAccountOffers();
     }
 
